@@ -1,0 +1,14 @@
+name: churn_pred_example
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.8.20
+  - hydra-core=1.3.2
+  - matplotlib=3.7.3
+  - pandas=2.0.3
+  - jupyterlab=4.0.9
+  - pip=24.3.1
+  - pip:
+      - mlflow==2.15.1
+      - wandb==0.19.6

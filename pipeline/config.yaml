@@ -1,0 +1,58 @@
+main:
+  project_name: churn_model_pipeline
+  experiment_name: RF
+  execute_steps:
+    - download
+    - preprocess
+    - check_data
+    - segregate
+    - random_forest
+    - evaluate
+  # use this to ensure reproducibility  
+  random_seed: 137
+data:
+  file_url: "https://github.com/bbrandom91/ChurnModelPipeline/blob/main/raw_dataset.csv.zip?raw=true"
+  reference_dataset: "churn_model_pipeline/preprocessed_data.csv:latest"
+  # Threshold for Kolomorov-Smirnov test
+  ks_alpha: 0.05
+  test_size: 0.2
+  val_size: 0.2
+  # Stratify according to the target when splitting the data
+  # in train/test or in train/val
+  stratify: Churn
+random_forest_pipeline:
+  random_forest:
+    n_estimators: 100
+    criterion: 'gini'
+    max_depth: 13
+    min_samples_split: 2
+    min_samples_leaf: 1
+    min_weight_fraction_leaf: 0.0
+    max_features: null
+    max_leaf_nodes: null
+    min_impurity_decrease: 0.0
+    bootstrap: true
+    oob_score: false
+    n_jobs: null
+    # This is a different random seed than main.random_seed,
+    # because this is used only within the RandomForest
+    random_state: 42
+    verbose: 0
+    warm_start: false
+    class_weight: "balanced"
+    ccp_alpha: 0.0
+    max_samples: null
+  features:
+    numerical:
+      - "Age"
+      - "Tenure"
+      - "Usage Frequency"
+      - "Payment Delay"
+      - "Total Spend"
+      - "Last Interaction"
+    categorical:
+      - "Subscription Type"
+      - "Gender"
+      - "Contract Length"
+      - "Subscription-Contract"
+  export_artifact: "model_export"
